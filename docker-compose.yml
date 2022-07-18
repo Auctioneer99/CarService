@@ -1,0 +1,84 @@
+version: "3.8"
+
+services:
+  postgres:
+    build: ./CarServiceDatabase/
+    hostname: ${POSTGRES_URL}
+    container_name: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    restart: unless-stopped
+    volumes:
+      - car-service:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+    networks: 
+      - database
+
+  postgres_client:
+    user: root
+    image: dpage/pgadmin4
+    container_name: pgAdmin
+    volumes:
+      - car-service:/var/lib/pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PG_ADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PG_ADMIN_PASSWORD}
+      PGADMIN_LISTEN_PORT: 7777
+    ports:
+      - ${PG_ADMIN_PORT}:7777
+    networks: 
+      - database
+
+  keycloak:
+    build: "./CarServiceAuth/"
+    hostname: ${KEYCLOAK_URL}
+    container_name: keycloak
+    environment:
+      KC_FEATURES: preview
+      KC_DB: postgres
+      KC_DB_URL: ${DB_URL}
+      KC_DB_USERNAME: ${POSTGRES_USER}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_USER}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
+    ports:
+      - ${KEYCLOAK_PORT}:8080
+    depends_on:
+      - postgres
+    networks:
+      - database
+
+  server:
+    build: "CarServiceBackend/."
+    container_name: server
+    environment:
+      DB_URL: ${DOTNET_DB_URL}
+      JWT_AUTHORITY: ${KEYCLOAK_AUTHORITY}
+      JWT_AUDIENCE: ${KEYCLOAK_AUDIENCE}
+    ports:
+      - ${SERVER_PORT}:80
+      - 8001:443
+    networks:
+      - database
+      - api
+    depends_on:
+      - keycloak
+      - postgres
+
+  client:
+    build: "carservicewebclient/."
+    container_name: client
+    ports:
+      - ${CLIENT_PORT}:81
+    depends_on:
+      - keycloak
+      - server
+    networks:
+      - api
+volumes:
+  car-service:
+networks:
+  database:
+  api:

@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CarServiceDesktop.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="AuthClientId" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">MainClient</Value>
+    </Setting>
+    <Setting Name="AuthTokenEndpoint" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://localhost:8100/realms/CarService/protocol/openid-connect/token</Value>
+    </Setting>
+    <Setting Name="AuthRefreshAccessTokenEndpoint" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://localhost:8100/realms/CarService/protocol/openid-connect/token</Value>
+    </Setting>
+    <Setting Name="ApiEndpoint" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://localhost:8000/api</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
