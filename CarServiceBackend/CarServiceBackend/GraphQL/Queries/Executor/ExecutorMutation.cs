@@ -80,10 +80,15 @@ namespace CarServiceBackend.GraphQL.Queries.Executor
             var mapped = mapper.Map<Transport>(toAdd);
             var user = userViewRepository.GetQuery()
                 .Where(u => u.Id.Equals(mapped.OwnerId) && u.Role.Equals(RoleStrings.CUSTOMER))
-                .FirstOrDefault();
-            if (user == null)
+                .Any();
+            if (user == false)
             {
                 throw new InvalidEntityException("Владелец");
+            }
+            var alreadyExist = transportRepository.GetQuery().Where(t => t.Number.Equals(toAdd.Number)).Any();
+            if (alreadyExist)
+            {
+                throw new InvalidEntityException("Номер");
             }
 
             return await transportRepository.Add(mapped);

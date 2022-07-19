@@ -109,7 +109,7 @@ namespace CarServiceBackend.GraphQL.Queries
                 .Where(w => w.PerformDate <= to)
                 .GroupBy(w => w.TransportId)
                 .Select(g => new WorkReportForTransport(g.Sum(w => w.Price), g.Sum(w => w.Mileage)))
-                .FirstOrDefault();
+                .FirstOrDefault() ?? new WorkReportForTransport(0, 0);
         }
 
         [MyAuthorize(ERole.Admin | ERole.Executor)]
@@ -131,7 +131,7 @@ namespace CarServiceBackend.GraphQL.Queries
                 .Where(w => w.PerformDate <= to)
                 .GroupBy(w => true)
                 .Select(g => new WorkReport(g.Sum(w => w.Price), g.Count()))
-                .FirstOrDefault();
+                .FirstOrDefault() ?? new WorkReport(0, 0);
         }
 
         [MyAuthorize(ERole.Admin)]
@@ -149,7 +149,7 @@ namespace CarServiceBackend.GraphQL.Queries
                 .Where(w => w.PerformDate <= to)
                 .GroupBy(w => w.Transport.OwnerId)
                 .Select(g => new WorkReportForCustomer(g.Sum(w => w.Price), g.Count()))
-                .FirstOrDefault();
+                .FirstOrDefault() ?? new WorkReportForCustomer(0, 0);
         }
 
         [MyAuthorize(ERole.Admin)]
@@ -166,7 +166,7 @@ namespace CarServiceBackend.GraphQL.Queries
                 .Where(w => w.PerformDate <= to)
                 .GroupBy(w => w.ExecutorId)
                 .Select(g => new WorkReportForExecutor(g.Sum(w => w.Price), g.Count()))
-                .FirstOrDefault();
+                .FirstOrDefault() ?? new WorkReportForExecutor(0, 0);
         }
     }
 }
