@@ -39,7 +39,7 @@ namespace CarServiceDesktop.Views.Work
 
         private async void bindingSource_CurrentChanged(object sender, EventArgs e)
         {
-            int offset = (int)((BindingSource)sender).Current;
+            int offset = (((BindingSource)sender)?.Current as int?) ?? 0;
             if (_previouslySearchedOffset == offset)
             {
                 return;
