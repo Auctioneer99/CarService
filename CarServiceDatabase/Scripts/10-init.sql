@@ -18,7 +18,7 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-DROP DATABASE carservice;
+--DROP DATABASE carservice;
 --
 -- TOC entry 4256 (class 1262 OID 16384)
 -- Name: carservice; Type: DATABASE; Schema: -; Owner: postgres
@@ -47,7 +47,7 @@ SET row_security = off;
 -- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
-CREATE SCHEMA public;
+--CREATE SCHEMA public;
 
 
 ALTER SCHEMA public OWNER TO postgres;

@@ -11,8 +11,6 @@ services:
     restart: unless-stopped
     volumes:
       - car-service:/var/lib/postgresql/data
-    ports:
-      - 5433:5432
     networks: 
       - database
 
@@ -59,7 +57,6 @@ services:
       JWT_AUDIENCE: ${KEYCLOAK_AUDIENCE}
     ports:
       - ${SERVER_PORT}:80
-      - 8001:443
     networks:
       - database
       - api
